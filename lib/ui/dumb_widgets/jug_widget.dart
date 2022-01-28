@@ -47,7 +47,21 @@ class JugWidget extends StatelessWidget {
         ),
         SizedBox(
           width: 55,
-          child: Text(name.isEmpty ? '$maxVolume gal Jug' : 'Ocean'),
+          child: Column(
+            children: [
+              Text(
+                name.isEmpty ? 'current vol: $currentVolume' : '',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                name.isEmpty ? '$maxVolume gal Jug' : 'Ocean',
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ],
     );

@@ -26,16 +26,21 @@ class CalcService {
     while (x.currentVolume != target && y.currentVolume != target) {
       if (x.isEmpty) {
         x.fill();
-
         steps.add(
           WaterStep(
             action: WaterAction.fill,
             fromJug: _ocean.name,
+            fromJugMax: _ocean.maxVolume,
             fromJugVolume: _ocean.currentVolume,
             toJug: x.name,
+            toJugMax: x.maxVolume,
             toJugVolume: x.currentVolume,
           ),
         );
+      }
+
+      if (x.currentVolume == target || y.currentVolume == target) {
+        break;
       }
 
       final transferred = y.transferIn(
@@ -43,13 +48,14 @@ class CalcService {
       );
 
       x.transferOut(transferred);
-
       steps.add(
         WaterStep(
           action: WaterAction.transfer,
           fromJug: x.name,
           fromJugVolume: x.currentVolume,
+          fromJugMax: x.maxVolume,
           toJug: y.name,
+          toJugMax: y.maxVolume,
           toJugVolume: y.currentVolume,
         ),
       );
@@ -62,28 +68,30 @@ class CalcService {
         y.transferOut(
           x.maxVolume > y.maxVolume ? y.currentVolume : x.currentVolume,
         );
-
         steps.add(
           WaterStep(
             action: WaterAction.transfer,
             fromJug: y.name,
             fromJugVolume: y.currentVolume,
+            fromJugMax: y.maxVolume,
             toJug: x.name,
             toJugVolume: x.currentVolume,
+            toJugMax: x.maxVolume,
           ),
         );
       }
 
       if (y.isFull && !x.isEmpty) {
         y.currentVolume = 0;
-
         steps.add(
           WaterStep(
             action: WaterAction.empty,
             fromJug: y.name,
             fromJugVolume: y.currentVolume,
+            fromJugMax: y.maxVolume,
             toJug: _ocean.name,
             toJugVolume: _ocean.currentVolume,
+            toJugMax: _ocean.maxVolume,
           ),
         );
       }
@@ -114,10 +122,6 @@ class CalcService {
     final gcd = _getGcd(reassignedB.maxVolume, reassignedA.maxVolume);
 
     if (target % gcd != 0) {
-      return <WaterStep>[];
-    }
-
-    if (target > yMax) {
       return <WaterStep>[];
     }
 

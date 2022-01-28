@@ -35,14 +35,14 @@ void main() {
     );
   });
 
-  test('solve 5 22 2', () {
+  test('solve 5 2 3', () {
     expect(
       service.getMinSteps(
         Jug(name: 'X', maxVolume: 5),
-        Jug(name: 'Y', maxVolume: 22),
-        2,
+        Jug(name: 'Y', maxVolume: 2),
+        3,
       ),
-      (List<WaterStep> res) => res.length == 8,
+      (List<WaterStep> res) => res.length == 2,
     );
   });
 

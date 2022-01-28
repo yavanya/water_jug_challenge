@@ -7,18 +7,22 @@ class WaterStep {
     required this.action,
     required this.fromJug,
     required this.fromJugVolume,
+    required this.fromJugMax,
     required this.toJug,
     required this.toJugVolume,
+    required this.toJugMax,
   });
 
   final WaterAction action;
   final String fromJug;
   final int fromJugVolume;
+  final int fromJugMax;
   final String toJug;
   final int toJugVolume;
+  final int toJugMax;
 
   String get explanation {
-    final actionString = action.toString();
+    final actionString = action.name;
 
     actionString.replaceFirst(
       actionString[0],
@@ -27,13 +31,13 @@ class WaterStep {
 
     switch (action) {
       case WaterAction.empty:
-        return '$actionString $fromJug';
+        return '$actionString $fromJugMax gal Jug to the Ocean';
 
       case WaterAction.fill:
-        return '$actionString $toJug';
+        return '$actionString $toJugMax gal Jug from the Ocean';
 
       case WaterAction.transfer:
-        return '$actionString from $fromJug to $toJug';
+        return '$actionString from $fromJugMax gal Jug to $toJugMax gal Jug';
     }
   }
 }

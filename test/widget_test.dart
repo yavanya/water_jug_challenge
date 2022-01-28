@@ -5,26 +5,55 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:water_jug_challenge/main.dart';
+import 'package:water_jug_challenge/models/jug_model.dart';
+import 'package:water_jug_challenge/models/step_model.dart';
+import 'package:water_jug_challenge/services/calc_service.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  final service = CalcService();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  test('solve 2 10 4', () {
+    expect(
+      service.getMinSteps(
+        Jug(name: 'X', maxVolume: 2),
+        Jug(name: 'Y', maxVolume: 10),
+        4,
+      ),
+      (List<WaterStep> res) => res.length == 4,
+    );
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  test('solve 2 3 4', () {
+    expect(
+      service.getMinSteps(
+        Jug(name: 'X', maxVolume: 2),
+        Jug(name: 'Y', maxVolume: 3),
+        4,
+      ),
+      (List<WaterStep> res) => res.isEmpty,
+    );
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  test('solve 5 22 2', () {
+    expect(
+      service.getMinSteps(
+        Jug(name: 'X', maxVolume: 5),
+        Jug(name: 'Y', maxVolume: 22),
+        2,
+      ),
+      (List<WaterStep> res) => res.length == 8,
+    );
+  });
+
+  test('solve 3 5 4', () {
+    expect(
+      service.getMinSteps(
+        Jug(name: 'X', maxVolume: 3),
+        Jug(name: 'Y', maxVolume: 5),
+        4,
+      ),
+      (List<WaterStep> res) => res.length == 6,
+    );
   });
 }
